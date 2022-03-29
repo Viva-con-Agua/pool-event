@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+    app:
+        build:
+          context: .
+          dockerfile: Dockerfile.dev
+        image: vivaconagua/pool-core:stage
+        restart: unless-stopped
+        env_file:
+            - .env
+        volumes:
+          - .:/app
+        networks:
+            default:
+              ipv4_address: ${DOCKER_IP}
+   
+networks:
+    default:
+        external: true
+        name: pool_net
+
