@@ -1,6 +1,6 @@
 .PHONY: up restart logs build stage prod
 
-repo=vivaconagua/pool-core
+repo=vivaconagua/pool-event
 
 
 
