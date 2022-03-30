@@ -18,7 +18,7 @@ func main() {
 	e.Validator = vcago.JSONValidator
 
 	events := e.Group("/events")
-	event := e.Group("event")
+	event := events.Group("/event")
 	event.POST("", handlers.EventCreate)
 	event.GET("", handlers.EventList)
 	event.GET("/:id", handlers.EventGetByID)

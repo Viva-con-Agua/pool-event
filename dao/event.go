@@ -10,20 +10,26 @@ import (
 )
 
 type EventDB struct {
-	ID           string                        `json:"id" bson:"_id"`
-	Name         string                        `json:"name" bson:"name"`
-	TypeOfEvent  string                        `json:"type_of_event" bson:"type_of_event"`
-	TourneeID    string                        `json:"tournee_id" bson:"tournee_id"`
-	Location     vcapool.Location              `json:"location" bson:"location"`
-	Artists      []string                      `json:"artists" bson:"artists"`
-	Organizer    vcapool.Organizer             `json:"organizer" bson:"organizer"`
-	StartAt      int64                         `json:"start_at" bson:"start_at"`
-	EndAt        int64                         `json:"end_at" bson:"end_at"`
-	Application  vcapool.EventApplication      `json:"application" bson:"application"`
-	Organisation vcapool.EventOrganisationList `json:"organistion"`
-	Tools        []string                      `json:"tools" bson:"tools"`
-	CreaterID    string                        `json:"creater_id" bson:"creater_id"`
-	Modified     vcago.Modified                `json:"modified" bson:"modified"`
+	ID                    string                   `json:"id" bson:"_id"`
+	Name                  string                   `json:"name" bson:"name"`
+	TypeOfEvent           string                   `json:"type_of_event" bson:"type_of_event"`
+	AdditionalInformation string                   `json:"additional_information" bson:"additional_information"`
+	Website               string                   `json:"website" bson:"website"`
+	TourneeID             string                   `json:"tournee_id" bson:"tournee_id"`
+	Location              vcapool.Location         `json:"location" bson:"location"`
+	Artists               []string                 `json:"artists" bson:"artists"`
+	Organizer             vcapool.Organizer        `json:"organizer" bson:"organizer"`
+	StartAt               int64                    `json:"start_at" bson:"start_at"`
+	EndAt                 int64                    `json:"end_at" bson:"end_at"`
+	Crew                  vcapool.CrewSimple       `json:"crew" bson:"crew"`
+	EventASP              vcapool.EventASP         `json:"event_asp" bson:"event_asp"`
+	InteralASP            vcapool.EventASP         `json:"interal_asp" bson:"internal_asp"`
+	ExternalASP           vcapool.EventASPExternal `json:"external_asp" bson:"external_asp"`
+	Application           vcapool.EventApplication `json:"application" bson:"application"`
+	EventTools            vcapool.EventTools       `json:"event_tools" bson:"event_tools"`
+	CreatorID             string                   `json:"creator_id" bson:"creator_id"`
+	EventState            vcapool.EventState       `json:"event_state" bson:"event_state"`
+	Modified              vcago.Modified           `json:"modified" bson:"modified"`
 }
 
 var EventCollection = Database.Collection("events")
