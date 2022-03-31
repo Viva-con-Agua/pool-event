@@ -24,12 +24,18 @@ func main() {
 	event.GET("/:id", handlers.EventGetByID)
 	event.PUT("", handlers.EventUpdate)
 	event.DELETE("/:id", handlers.EventDeleteByID)
+
 	artist := events.Group("/artist")
 	artist.POST("", handlers.ArtistCreate)
 	artist.GET("", handlers.ArtistList)
 	artist.GET("/:id", handlers.ArtistGetByID)
 	artist.PUT("", handlers.ArtistUpdate)
 	artist.DELETE("/:id", handlers.ArtistDeleteByID)
+
+	tour := events.Group("/tour")
+	tour.POST("", handlers.TourCreate)
+	tour.GET("/:id", handlers.TourGetByID)
+	tour.GET("", handlers.TourList)
 	//server
 	port := vcago.Config.GetEnvString("APP_PORT", "n", "1323")
 	e.Logger.Fatal(e.Start(":" + port))

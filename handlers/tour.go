@@ -9,53 +9,54 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func EventCreate(c echo.Context) (err error) {
+func TourCreate(c echo.Context) (err error) {
 	ctx := c.Request().Context()
-	body := new(dao.EventCreate)
+	body := new(dao.TourCreate)
 	if err = vcago.BindAndValidate(c, body); err != nil {
 		return
 	}
-	result := new(dao.Event)
+	result := new(vcapool.Tour)
 	if result, err = body.Create(ctx); err != nil {
 		return
 	}
-	return vcago.NewCreated("event", result)
+	return vcago.NewCreated("tour", result)
 }
 
-func EventGetByID(c echo.Context) (err error) {
+func TourGetByID(c echo.Context) (err error) {
 	ctx := c.Request().Context()
-	result := new(dao.Event)
+	result := new(dao.Tour)
 	if err = result.Get(ctx, bson.M{"_id": c.Param("id")}); err != nil {
 		return
 	}
-	return vcago.NewSelected("event", result)
+	return vcago.NewSelected("tour", result)
 }
 
-func EventList(c echo.Context) (err error) {
+func TourList(c echo.Context) (err error) {
 	ctx := c.Request().Context()
-	body := new(dao.EventQuery)
-	result := new(vcapool.EventList)
+	body := new(dao.TourQuery)
+	result := new(vcapool.TourList)
 	if result, err = body.List(ctx); err != nil {
 		return
 	}
-	return vcago.NewSelected("event_list", result)
+	return vcago.NewSelected("tour_list", result)
 }
 
-func EventUpdate(c echo.Context) (err error) {
+func TourUpdate(c echo.Context) (err error) {
 	ctx := c.Request().Context()
-	body := new(dao.Event)
-	if err = body.Update(ctx); err != nil {
+	body := new(dao.TourUpdate)
+	result := new(vcapool.Tour)
+	if result, err = body.Update(ctx); err != nil {
 		return
 	}
-	return vcago.NewUpdated("event", body)
+	return vcago.NewUpdated("tour", result)
 }
 
-func EventDeleteByID(c echo.Context) (err error) {
+func TourDeleteByID(c echo.Context) (err error) {
 	ctx := c.Request().Context()
-	body := new(dao.Event)
+	body := new(dao.Tour)
 	id := c.Param("id")
 	if err = body.Delete(ctx, bson.M{"_id": id}); err != nil {
 		return
 	}
-	return vcago.NewDeleted("event", id)
+	return vcago.NewDeleted("tour", id)
 }
