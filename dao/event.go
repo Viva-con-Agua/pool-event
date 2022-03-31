@@ -23,7 +23,7 @@ type EventDB struct {
 	EndAt                 int64                    `json:"end_at" bson:"end_at"`
 	Crew                  vcapool.CrewSimple       `json:"crew" bson:"crew"`
 	EventASP              vcapool.EventASP         `json:"event_asp" bson:"event_asp"`
-	InteralASP            vcapool.EventASP         `json:"interal_asp" bson:"internal_asp"`
+	InternalASP           vcapool.EventASP         `json:"internal_asp" bson:"internal_asp"`
 	ExternalASP           vcapool.EventASPExternal `json:"external_asp" bson:"external_asp"`
 	Application           vcapool.EventApplication `json:"application" bson:"application"`
 	EventTools            vcapool.EventTools       `json:"event_tools" bson:"event_tools"`
