@@ -60,10 +60,13 @@ func (i *Tour) Get(ctx context.Context, filter bson.M) (err error) {
 	}
 	i.Events = *list
 	artists := new(vcapool.ArtistList)
-	if err = ArtistCollection.Find(ctx, bson.M{"_id": bson.M{"$in": i.ArtistIDs}}, artists); err != nil {
-		return
+
+	if i.ArtistIDs != nil {
+		if err = ArtistCollection.Find(ctx, bson.M{"_id": bson.M{"$in": i.ArtistIDs}}, artists); err != nil {
+			return
+		}
+		i.Artists = *artists
 	}
-	i.Artists = *artists
 	return
 }
 

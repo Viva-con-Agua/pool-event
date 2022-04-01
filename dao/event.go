@@ -39,11 +39,13 @@ func (i *Event) Get(ctx context.Context, filter bson.M) (err error) {
 	if err = EventCollection.FindOne(ctx, filter, i); err != nil {
 		return
 	}
-	artists := new(vcapool.ArtistList)
-	if err = ArtistCollection.Find(ctx, bson.M{"_id": bson.M{"$in": i.ArtistIDs}}, artists); err != nil {
-		return
+	if i.ArtistIDs != nil {
+		artists := new(vcapool.ArtistList)
+		if err = ArtistCollection.Find(ctx, bson.M{"_id": bson.M{"$in": i.ArtistIDs}}, artists); err != nil {
+			return
+		}
+		i.Artists = *artists
 	}
-	i.Artists = *artists
 	return
 }
 
