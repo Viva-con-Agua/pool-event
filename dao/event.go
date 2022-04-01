@@ -25,11 +25,13 @@ func (i *EventCreate) Create(ctx context.Context) (r *Event, err error) {
 		return
 	}
 	r = (*Event)(database.Event())
-	artists := new(vcapool.ArtistList)
-	if err = ArtistCollection.Find(ctx, bson.M{"_id": bson.M{"$in": database.ArtistIDs}}, artists); err != nil {
-		return
+	if r.ArtistIDs != nil {
+		artists := new(vcapool.ArtistList)
+		if err = ArtistCollection.Find(ctx, bson.M{"_id": bson.M{"$in": database.ArtistIDs}}, artists); err != nil {
+			return
+		}
+		r.Artists = *artists
 	}
-	r.Artists = *artists
 	return
 }
 

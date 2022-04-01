@@ -15,6 +15,11 @@ func EventCreate(c echo.Context) (err error) {
 	if err = vcago.BindAndValidate(c, body); err != nil {
 		return
 	}
+	userReq := new(vcapool.AccessToken)
+	if userReq, err = vcapool.AccessCookieUser(c); err != nil {
+		return
+	}
+	body.CreatorID = userReq.ID
 	result := new(dao.Event)
 	if result, err = body.Create(ctx); err != nil {
 		return

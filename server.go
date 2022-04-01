@@ -17,7 +17,7 @@ func main() {
 	e.HTTPErrorHandler = vcago.HTTPErrorHandler
 	e.Validator = vcago.JSONValidator
 
-	events := e.Group("/events")
+	events := e.Group("/events", vcago.AccessCookieConfig())
 	event := events.Group("/event")
 	event.POST("", handlers.EventCreate)
 	event.GET("", handlers.EventList)
