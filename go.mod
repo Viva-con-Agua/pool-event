@@ -3,7 +3,7 @@ module pool-event
 go 1.17
 
 require (
-	github.com/Viva-con-Agua/vcago v1.2.11
+	github.com/Viva-con-Agua/vcago v1.3.0
 	github.com/Viva-con-Agua/vcapool v0.1.5
 	github.com/google/uuid v1.3.0
 	github.com/labstack/echo/v4 v4.7.2
@@ -49,3 +49,4 @@ require (
 )
 
 //replace github.com/Viva-con-Agua/vcapool => /home/dls/Projects/go/src/github.com/Viva-con-Agua/vcapool
+//replace github.com/Viva-con-Agua/vcago => /home/dls/Projects/go/src/github.com/Viva-con-Agua/vcago

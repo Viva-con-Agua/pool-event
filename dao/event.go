@@ -25,13 +25,11 @@ func (i *EventCreate) Create(ctx context.Context) (r *Event, err error) {
 		return
 	}
 	r = (*Event)(database.Event())
-	if r.ArtistIDs != nil {
-		artists := new(vcapool.ArtistList)
-		if err = ArtistCollection.Find(ctx, bson.M{"_id": bson.M{"$in": database.ArtistIDs}}, artists); err != nil {
-			return
-		}
-		r.Artists = *artists
+	artists := new(vcapool.ArtistList)
+	if err = ArtistCollection.Find(ctx, vcago.NewFilter().In("_id", database.ArtistIDs).Bson(), artists); err != nil {
+		return
 	}
+	r.Artists = *artists
 	return
 }
 
@@ -39,13 +37,12 @@ func (i *Event) Get(ctx context.Context, filter bson.M) (err error) {
 	if err = EventCollection.FindOne(ctx, filter, i); err != nil {
 		return
 	}
-	if i.ArtistIDs != nil {
-		artists := new(vcapool.ArtistList)
-		if err = ArtistCollection.Find(ctx, bson.M{"_id": bson.M{"$in": i.ArtistIDs}}, artists); err != nil {
-			return
-		}
-		i.Artists = *artists
+
+	artists := new(vcapool.ArtistList)
+	if err = ArtistCollection.Find(ctx, vcago.NewFilter().In("_id", i.ArtistIDs).Bson(), artists); err != nil {
+		return
 	}
+	i.Artists = *artists
 	return
 }
 

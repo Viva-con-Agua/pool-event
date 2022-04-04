@@ -9,54 +9,65 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func TourCreate(c echo.Context) (err error) {
-	ctx := c.Request().Context()
+type TourHandler struct {
+	vcago.Handler
+}
+
+func NewTourHandler() *EventHandler {
+	handler := vcago.NewHandler("event")
+	return &EventHandler{
+		*handler,
+	}
+}
+
+func (i *TourHandler) Create(cc echo.Context) (err error) {
+	c := cc.(vcago.Context)
 	body := new(dao.TourCreate)
-	if err = vcago.BindAndValidate(c, body); err != nil {
+	if err = c.BindAndValidate(body); err != nil {
 		return
 	}
 	result := new(vcapool.Tour)
-	if result, err = body.Create(ctx); err != nil {
+	if result, err = body.Create(c.Ctx()); err != nil {
 		return
 	}
-	return vcago.NewCreated("tour", result)
+	return c.Created(result)
 }
 
-func TourGetByID(c echo.Context) (err error) {
-	ctx := c.Request().Context()
+func (i *TourHandler) GetByID(cc echo.Context) (err error) {
+	c := cc.(vcago.Context)
 	result := new(dao.Tour)
-	if err = result.Get(ctx, bson.M{"_id": c.Param("id")}); err != nil {
+	if err = result.Get(c.Ctx(), bson.M{"_id": c.Param("id")}); err != nil {
 		return
 	}
-	return vcago.NewSelected("tour", result)
+	return c.Selected(result)
 }
 
-func TourList(c echo.Context) (err error) {
-	ctx := c.Request().Context()
+func (i *TourHandler) List(cc echo.Context) (err error) {
+	c := cc.(vcago.Context)
 	body := new(dao.TourQuery)
 	result := new(vcapool.TourList)
-	if result, err = body.List(ctx); err != nil {
+	if result, err = body.List(c.Ctx()); err != nil {
 		return
 	}
-	return vcago.NewSelected("tour_list", result)
+	return c.Listed(result)
 }
 
-func TourUpdate(c echo.Context) (err error) {
-	ctx := c.Request().Context()
+func (i *TourHandler) Update(cc echo.Context) (err error) {
+	c := cc.(vcago.Context)
 	body := new(dao.TourUpdate)
 	result := new(vcapool.Tour)
-	if result, err = body.Update(ctx); err != nil {
+	if result, err = body.Update(c.Ctx()); err != nil {
 		return
 	}
-	return vcago.NewUpdated("tour", result)
+	return c.Updated(result)
 }
 
-func TourDeleteByID(c echo.Context) (err error) {
-	ctx := c.Request().Context()
+func (i *TourHandler) DeleteByID(cc echo.Context) (err error) {
+	c := cc.(vcago.Context)
 	body := new(dao.Tour)
 	id := c.Param("id")
-	if err = body.Delete(ctx, bson.M{"_id": id}); err != nil {
+	if err = body.Delete(c.Ctx(), bson.M{"_id": id}); err != nil {
 		return
 	}
-	return vcago.NewDeleted("tour", id)
+	return c.Deleted(id)
 }

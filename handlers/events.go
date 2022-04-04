@@ -9,53 +9,67 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func EventCreate(c echo.Context) (err error) {
-	ctx := c.Request().Context()
+type EventHandler struct {
+	vcago.Handler
+}
+
+func NewEventHandler() *EventHandler {
+	handler := vcago.NewHandler("event")
+	return &EventHandler{
+		*handler,
+	}
+}
+
+func (i *EventHandler) Create(cc echo.Context) (err error) {
+	c := cc.(vcago.Context)
 	body := new(dao.EventCreate)
-	if err = vcago.BindAndValidate(c, body); err != nil {
+	if err = c.BindAndValidate(body); err != nil {
 		return
 	}
 	userReq := new(vcapool.AccessToken)
-	if userReq, err = vcapool.AccessCookieUser(c); err != nil {
+	if err = c.AccessToken(userReq); err != nil {
 		return
 	}
 	body.CreatorID = userReq.ID
 	result := new(dao.Event)
-	if result, err = body.Create(ctx); err != nil {
+	if result, err = body.Create(c.Ctx()); err != nil {
 		return
 	}
-	return vcago.NewCreated("event", result)
+	return c.Created(result)
 }
 
-func EventGetByID(c echo.Context) (err error) {
-	ctx := c.Request().Context()
+func (i *EventHandler) GetByID(cc echo.Context) (err error) {
+	c := cc.(vcago.Context)
 	result := new(dao.Event)
-	if err = result.Get(ctx, bson.M{"_id": c.Param("id")}); err != nil {
+	if err = result.Get(c.Ctx(), bson.M{"_id": c.Param("id")}); err != nil {
 		return
 	}
-	return vcago.NewSelected("event", result)
+	return c.Selected(result)
 }
 
-func EventList(c echo.Context) (err error) {
-	ctx := c.Request().Context()
+func (i *EventHandler) List(cc echo.Context) (err error) {
+	c := cc.(vcago.Context)
 	body := new(dao.EventQuery)
 	result := new(vcapool.EventList)
-	if result, err = body.List(ctx); err != nil {
+	if result, err = body.List(c.Ctx()); err != nil {
 		return
 	}
-	return vcago.NewSelected("event_list", result)
+	return c.Listed(result)
 }
 
-func EventUpdate(c echo.Context) (err error) {
-	ctx := c.Request().Context()
+func (i *EventHandler) Update(cc echo.Context) (err error) {
+	c := cc.(vcago.Context)
 	body := new(dao.Event)
-	if err = body.Update(ctx); err != nil {
+	if err = c.BindAndValidate(body); err != nil {
 		return
 	}
-	return vcago.NewUpdated("event", body)
+	if err = body.Update(c.Ctx()); err != nil {
+		return
+	}
+	return c.Updated(body)
 }
 
-func EventDeleteByID(c echo.Context) (err error) {
+func (i *EventHandler) DeleteByID(c echo.Context) (err error) {
 	ctx := c.Request().Context()
 	body := new(dao.Event)
 	id := c.Param("id")

@@ -9,55 +9,66 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func ArtistCreate(c echo.Context) (err error) {
-	ctx := c.Request().Context()
-	body := new(dao.Artist)
-	if err = vcago.BindAndValidate(c, body); err != nil {
-		return
-	}
-	if err = body.Create(ctx); err != nil {
-		return
-	}
-	return vcago.NewCreated("artist", body)
+type ArtistHandler struct {
+	vcago.Handler
 }
 
-func ArtistGetByID(c echo.Context) (err error) {
-	ctx := c.Request().Context()
+func NewArtistHandler() *ArtistHandler {
+	handler := vcago.NewHandler("artist")
+	return &ArtistHandler{
+		*handler,
+	}
+}
+
+func (i *ArtistHandler) Create(cc echo.Context) (err error) {
+	c := cc.(vcago.Context)
+	body := new(dao.Artist)
+	if err = c.BindAndValidate(body); err != nil {
+		return
+	}
+	if err = body.Create(c.Ctx()); err != nil {
+		return
+	}
+	return c.Created(body)
+}
+
+func (i *ArtistHandler) GetByID(cc echo.Context) (err error) {
+	c := cc.(vcago.Context)
 	result := new(dao.Artist)
-	if err = result.Get(ctx, bson.M{"_id": c.Param("id")}); err != nil {
+	if err = result.Get(c.Ctx(), bson.M{"_id": c.Param("id")}); err != nil {
 		return
 	}
-	return vcago.NewSelected("artist", result)
+	return c.Selected(result)
 }
 
-func ArtistUpdate(c echo.Context) (err error) {
-	ctx := c.Request().Context()
+func (i *ArtistHandler) Update(cc echo.Context) (err error) {
+	c := cc.(vcago.Context)
 	body := new(dao.Artist)
-	if err = body.Update(ctx); err != nil {
+	if err = body.Update(c.Ctx()); err != nil {
 		return
 	}
-	return vcago.NewUpdated("artist", body)
+	return c.Updated(body)
 }
 
-func ArtistDeleteByID(c echo.Context) (err error) {
-	ctx := c.Request().Context()
+func (i *ArtistHandler) DeleteByID(cc echo.Context) (err error) {
+	c := cc.(vcago.Context)
 	body := new(dao.Artist)
 	id := c.Param("id")
-	if err = body.Delete(ctx, bson.M{"_id": id}); err != nil {
+	if err = body.Delete(c.Ctx(), bson.M{"_id": id}); err != nil {
 		return
 	}
-	return vcago.NewDeleted("artist", id)
+	return c.Deleted(id)
 }
 
-func ArtistList(c echo.Context) (err error) {
-	ctx := c.Request().Context()
+func (i *ArtistHandler) List(cc echo.Context) (err error) {
+	c := cc.(vcago.Context)
 	body := new(dao.ArtistQuery)
-	if err = vcago.BindAndValidate(c, body); err != nil {
+	if err = c.BindAndValidate(body); err != nil {
 		return
 	}
 	result := new(vcapool.ArtistList)
-	if result, err = body.List(ctx); err != nil {
+	if result, err = body.List(c.Ctx()); err != nil {
 		return
 	}
-	return vcago.NewSelected("artist", result)
+	return c.Listed(result)
 }
