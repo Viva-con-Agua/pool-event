@@ -26,13 +26,12 @@ func (i *EventHandler) Create(cc echo.Context) (err error) {
 	if err = c.BindAndValidate(body); err != nil {
 		return
 	}
-	userReq := new(vcapool.AccessToken)
-	if err = c.AccessToken(userReq); err != nil {
+	token := new(vcapool.AccessToken)
+	if err = c.AccessToken(token); err != nil {
 		return
 	}
-	body.CreatorID = userReq.ID
 	result := new(dao.Event)
-	if result, err = body.Create(c.Ctx()); err != nil {
+	if result, err = body.Create(c.Ctx(), token); err != nil {
 		return
 	}
 	return c.Created(result)

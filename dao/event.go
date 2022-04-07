@@ -19,8 +19,8 @@ type EventCreate struct {
 
 type Event vcapool.Event
 
-func (i *EventCreate) Create(ctx context.Context) (r *Event, err error) {
-	database := i.Database()
+func (i *EventCreate) Create(ctx context.Context, token *vcapool.AccessToken) (r *Event, err error) {
+	database := i.Database(token)
 	if err = EventCollection.InsertOne(ctx, database); err != nil {
 		return
 	}

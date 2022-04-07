@@ -9,20 +9,20 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-type ArtistHandler struct {
+type OrganizerHandler struct {
 	vcago.Handler
 }
 
-func NewArtistHandler() *ArtistHandler {
-	handler := vcago.NewHandler("artist")
-	return &ArtistHandler{
+func NewOrganizerHandler() *OrganizerHandler {
+	handler := vcago.NewHandler("organizer")
+	return &OrganizerHandler{
 		*handler,
 	}
 }
 
-func (i *ArtistHandler) Create(cc echo.Context) (err error) {
+func (i *OrganizerHandler) Create(cc echo.Context) (err error) {
 	c := cc.(vcago.Context)
-	body := new(dao.Artist)
+	body := new(dao.Organizer)
 	if err = c.BindAndValidate(body); err != nil {
 		return
 	}
@@ -32,18 +32,18 @@ func (i *ArtistHandler) Create(cc echo.Context) (err error) {
 	return c.Created(body)
 }
 
-func (i *ArtistHandler) GetByID(cc echo.Context) (err error) {
+func (i *OrganizerHandler) GetByID(cc echo.Context) (err error) {
 	c := cc.(vcago.Context)
-	result := new(dao.Artist)
+	result := new(dao.Organizer)
 	if err = result.Get(c.Ctx(), bson.M{"_id": c.Param("id")}); err != nil {
 		return
 	}
 	return c.Selected(result)
 }
 
-func (i *ArtistHandler) Update(cc echo.Context) (err error) {
+func (i *OrganizerHandler) Update(cc echo.Context) (err error) {
 	c := cc.(vcago.Context)
-	body := new(dao.Artist)
+	body := new(dao.Organizer)
 	if err = c.BindAndValidate(body); err != nil {
 		return
 	}
@@ -53,9 +53,9 @@ func (i *ArtistHandler) Update(cc echo.Context) (err error) {
 	return c.Updated(body)
 }
 
-func (i *ArtistHandler) DeleteByID(cc echo.Context) (err error) {
+func (i *OrganizerHandler) DeleteByID(cc echo.Context) (err error) {
 	c := cc.(vcago.Context)
-	body := new(dao.Artist)
+	body := new(dao.Organizer)
 	id := c.Param("id")
 	if err = body.Delete(c.Ctx(), bson.M{"_id": id}); err != nil {
 		return
@@ -63,13 +63,13 @@ func (i *ArtistHandler) DeleteByID(cc echo.Context) (err error) {
 	return c.Deleted(id)
 }
 
-func (i *ArtistHandler) List(cc echo.Context) (err error) {
+func (i *OrganizerHandler) List(cc echo.Context) (err error) {
 	c := cc.(vcago.Context)
-	body := new(dao.ArtistQuery)
+	body := new(dao.OrganizerQuery)
 	if err = c.BindAndValidate(body); err != nil {
 		return
 	}
-	result := new(vcapool.ArtistList)
+	result := new(vcapool.OrganizerList)
 	if result, err = body.List(c.Ctx()); err != nil {
 		return
 	}

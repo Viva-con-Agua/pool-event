@@ -13,9 +13,9 @@ type TourHandler struct {
 	vcago.Handler
 }
 
-func NewTourHandler() *EventHandler {
-	handler := vcago.NewHandler("event")
-	return &EventHandler{
+func NewTourHandler() *TourHandler {
+	handler := vcago.NewHandler("tour")
+	return &TourHandler{
 		*handler,
 	}
 }
@@ -26,8 +26,12 @@ func (i *TourHandler) Create(cc echo.Context) (err error) {
 	if err = c.BindAndValidate(body); err != nil {
 		return
 	}
+	token := new(vcapool.AccessToken)
+	if err = c.AccessToken(token); err != nil {
+		return
+	}
 	result := new(vcapool.Tour)
-	if result, err = body.Create(c.Ctx()); err != nil {
+	if result, err = body.Create(c.Ctx(), token); err != nil {
 		return
 	}
 	return c.Created(result)

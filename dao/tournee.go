@@ -22,14 +22,16 @@ type TourCreate struct {
 
 type TourUpdate vcapool.TourUpdate
 
-func (i *TourCreate) Create(ctx context.Context) (r *vcapool.Tour, err error) {
-	database := i.Database()
-	events := i.Events.Database(database.ID)
+func (i *TourCreate) Create(ctx context.Context, token *vcapool.AccessToken) (r *vcapool.Tour, err error) {
+	database := i.Database(token)
 	if err = TourCollection.InsertOne(ctx, database); err != nil {
 		return
 	}
-	if err = EventCollection.InsertMany(ctx, events.Insert()); err != nil {
-		return
+	events := i.Events.Database(database.ID, token).Insert()
+	if events != nil {
+		if err = EventCollection.InsertMany(ctx, events); err != nil {
+			return
+		}
 	}
 	r = database.Tour()
 	pipe := vcago.NewMongoPipe()
