@@ -47,6 +47,15 @@ func main() {
 	organizer.PUT("", organizerHandler.Update)
 	organizer.DELETE("/:id", organizerHandler.DeleteByID)
 
+	participationHandler := handlers.NewParticipationHandler()
+	participation := events.Group("/participation")
+	participation.Use(participationHandler.Context)
+	participation.POST("", participationHandler.Create)
+	participation.GET("", participationHandler.List)
+	participation.GET("/:id", participationHandler.Get)
+	participation.PUT("", participationHandler.Update)
+	participation.DELETE("/:id", participationHandler.Delete)
+
 	tourHandler := handlers.NewTourHandler()
 	tour := events.Group("/tour")
 	tour.Use(tourHandler.Context)
