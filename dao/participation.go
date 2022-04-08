@@ -2,10 +2,10 @@ package dao
 
 import (
 	"context"
+	"log"
 
 	"github.com/Viva-con-Agua/vcago"
 	"github.com/Viva-con-Agua/vcapool"
-	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -32,19 +32,7 @@ func (i *ParticipationCreate) Create(ctx context.Context, token *vcapool.AccessT
 	if err = EventCollection.FindOne(ctx, bson.M{"_id": i.EventID}, event); err != nil {
 		return
 	}
-	r = &vcapool.Participation{
-		ID: uuid.NewString(),
-		User: vcapool.UserInternal{
-			UserID:      token.ID,
-			Email:       token.Email,
-			FullName:    token.FullName,
-			DisplayName: token.DisplayName,
-			Phone:       token.Profile.Phone,
-		},
-		EventID:  i.EventID,
-		Status:   "requested",
-		Modified: vcago.NewModified(),
-	}
+	r = vcapool.NewParticipation(token, i.EventID)
 	err = ParticipationCollection.InsertOne(ctx, r)
 	return
 }
@@ -59,17 +47,19 @@ func (i *ParticipationUpdate) Update(ctx context.Context, token *vcapool.AccessT
 		return
 	}
 	if i.Status == "confirmed" || i.Status == "rejected" {
-		if !(token.PoolRoles.Validate("operation") || token.Roles.Validate("employee;admin") || token.ID == event.EventASP.UserID) {
+		log.Print(i.Status)
+		if !(token.PoolRoles.Validate("operation") || token.Roles.Validate("employee;admin") || token.ID == event.EventASP.ID) {
 			err = vcago.NewPermissionDenied("participation", i.ID)
+			log.Print("asd")
 			return
 		}
 	} else if i.Status == "withdrawn" {
-		if token.ID != r.User.UserID {
+		if token.ID != r.User.ID {
 			err = vcago.NewPermissionDenied("participation", i.ID)
 			return
 		}
 	}
-	if err = ParticipationCollection.UpdateOneSet(ctx, bson.M{"_id": i.ID}, i); err != nil {
+	if err = ParticipationCollection.UpdateOneSet(ctx, bson.M{"_id": i.ID}, i.ParticipationUpdate); err != nil {
 		return
 	}
 	err = ParticipationCollection.FindOne(ctx, bson.M{"_id": i.ID}, r)
@@ -85,7 +75,7 @@ func (i *ParticipationParam) Get(ctx context.Context, token *vcapool.AccessToken
 	if err = EventCollection.FindOne(ctx, bson.M{"_id": r.EventID}, event); err != nil {
 		return
 	}
-	if !(token.PoolRoles.Validate("operation") || token.Roles.Validate("employee;admin") || token.ID == event.EventASP.UserID || token.ID == r.User.UserID) {
+	if !(token.PoolRoles.Validate("operation") || token.Roles.Validate("employee;admin") || token.ID == event.EventASP.ID || token.ID == r.User.ID) {
 		err = vcago.NewPermissionDenied("participation", i.ID)
 		return
 	}
