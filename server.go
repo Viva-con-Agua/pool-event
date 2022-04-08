@@ -18,19 +18,21 @@ func main() {
 	e.HTTPErrorHandler = vcago.HTTPErrorHandler
 	e.Validator = vcago.JSONValidator
 
-	events := e.Group("/events", vcago.AccessCookieMiddleware(&vcapool.AccessToken{}))
+	cookie := vcago.AccessCookieMiddleware(&vcapool.AccessToken{})
+
+	events := e.Group("/events")
 
 	eventHandler := handlers.NewEventHandler()
 	event := events.Group("/event")
 	event.Use(eventHandler.Context)
-	event.POST("", eventHandler.Create)
+	event.POST("", eventHandler.Create, cookie)
 	event.GET("", eventHandler.List)
 	event.GET("/:id", eventHandler.GetByID)
-	event.PUT("", eventHandler.Update)
-	event.DELETE("/:id", eventHandler.DeleteByID)
+	event.PUT("", eventHandler.Update, cookie)
+	event.DELETE("/:id", eventHandler.DeleteByID, cookie)
 
 	artistHandler := handlers.NewArtistHandler()
-	artist := events.Group("/artist")
+	artist := events.Group("/artist", cookie)
 	artist.Use(artistHandler.Context)
 	artist.POST("", artistHandler.Create)
 	artist.GET("", artistHandler.List)
@@ -39,7 +41,7 @@ func main() {
 	artist.DELETE("/:id", artistHandler.DeleteByID)
 
 	organizerHandler := handlers.NewOrganizerHandler()
-	organizer := events.Group("/organizer")
+	organizer := events.Group("/organizer", cookie)
 	organizer.Use(organizerHandler.Context)
 	organizer.POST("", organizerHandler.Create)
 	organizer.GET("", organizerHandler.List)
@@ -48,7 +50,7 @@ func main() {
 	organizer.DELETE("/:id", organizerHandler.DeleteByID)
 
 	participationHandler := handlers.NewParticipationHandler()
-	participation := events.Group("/participation")
+	participation := events.Group("/participation", cookie)
 	participation.Use(participationHandler.Context)
 	participation.POST("", participationHandler.Create)
 	participation.GET("", participationHandler.List)
@@ -57,7 +59,7 @@ func main() {
 	participation.DELETE("/:id", participationHandler.Delete)
 
 	tourHandler := handlers.NewTourHandler()
-	tour := events.Group("/tour")
+	tour := events.Group("/tour", cookie)
 	tour.Use(tourHandler.Context)
 	tour.POST("", tourHandler.Create)
 	tour.GET("/:id", tourHandler.GetByID)
