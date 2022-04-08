@@ -4,7 +4,12 @@ on:
   release:
     types: [published]
   push:
-    branches: ['stage']
+    branches: [ stage ]
+    # Publish semver tags as releases.
+    tags: [ 'v*.*.*' ]
+  pull_request:
+    branches: [ stage ]
+
 
 jobs:
   push_to_registry:
