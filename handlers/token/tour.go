@@ -1,5 +1,6 @@
-package handlers
+package token
 
+/*
 import (
 	"pool-event/dao"
 
@@ -11,6 +12,15 @@ import (
 
 type TourHandler struct {
 	vcago.Handler
+}
+
+var Tour = &TourHandler{*vcago.NewHandler("tour")}
+
+func (i *TourHandler) Routes(group *echo.Group) {
+	group.Use(i.Context)
+	group.POST("", i.Create)
+	group.GET("/:id", i.GetByID)
+	group.GET("", i.List)
 }
 
 func NewTourHandler() *TourHandler {
@@ -74,4 +84,4 @@ func (i *TourHandler) DeleteByID(cc echo.Context) (err error) {
 		return
 	}
 	return c.Deleted(id)
-}
+}*/
