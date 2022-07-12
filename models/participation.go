@@ -22,7 +22,7 @@ type (
 	}
 	ParticipationDatabase struct {
 		ID      string     `json:"id" bson:"_id"`
-		User    string     `json:"user" bson:"user"`
+		UserID  string     `json:"user" bson:"user"`
 		EventID string     `json:"event_id" bson:"event_id"`
 		Comment string     `json:"comment" bson:"comment"`
 		Status  string     `json:"status" bson:"status"`
@@ -64,7 +64,7 @@ type (
 func (i *ParticipationCreate) ParticipationDatabase(token *vcapool.AccessToken) *ParticipationDatabase {
 	return &ParticipationDatabase{
 		ID:       uuid.NewString(),
-		User:     token.ID,
+		UserID:   token.ID,
 		EventID:  i.EventID,
 		Comment:  i.Comment,
 		Status:   "requested",
@@ -75,7 +75,7 @@ func (i *ParticipationCreate) ParticipationDatabase(token *vcapool.AccessToken) 
 
 func ParticipationPipeline() (pipe *vmdb.Pipeline) {
 	pipe = vmdb.NewPipeline()
-	pipe.LookupUnwind("users", "user", "_id", "user")
+	pipe.LookupUnwind("users", "user_id", "_id", "user")
 	pipe.LookupUnwind("events", "event_id", "_id", "event")
 	return
 }
@@ -86,7 +86,7 @@ func (i *ParticipationQuery) Match() (r *vmdb.Match) {
 	r.EqualStringList("event_id", i.EventID)
 	r.EqualStringList("status", i.Status)
 	r.EqualStringList("comment", i.Comment)
-	r.EqualStringList("user.id", i.UserId)
+	r.EqualStringList("user._id", i.UserId)
 	r.EqualStringList("crew.name", i.CrewName)
 	r.EqualStringList("crew.id", i.CrewId)
 	return
