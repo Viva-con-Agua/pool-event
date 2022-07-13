@@ -40,12 +40,12 @@ type (
 		StartAt               int64            `json:"start_at" bson:"start_at"`
 		EndAt                 int64            `json:"end_at" bson:"end_at"`
 		Crew                  CrewSimple       `json:"crew" bson:"crew"`
-		EventASP              string           `json:"event_asp" bson:"event_asp"`
-		InteralASP            string           `json:"internal_asp" bson:"internal_asp"`
+		EventASPID            string           `json:"event_asp_id" bson:"event_asp_id"`
+		InteralASPID          string           `json:"internal_asp_id" bson:"internal_asp_id"`
 		ExternalASP           UserExternal     `json:"external_asp" bson:"external_asp"`
 		Application           EventApplication `json:"application" bson:"application"`
 		EventTools            EventTools       `json:"event_tools" bson:"event_tools"`
-		Creator               string           `json:"creator" bson:"creator"`
+		CreatorID             string           `json:"creator_id" bson:"creator_id"`
 		EventState            EventState       `json:"event_state" bson:"event_state"`
 		Modified              vcago.Modified   `json:"modified" bson:"modified"`
 	}
@@ -138,12 +138,12 @@ func (i *EventCreate) EventDatabase(token *vcapool.AccessToken) *EventDatabase {
 		StartAt:               i.StartAt,
 		EndAt:                 i.EndAt,
 		Crew:                  i.Crew,
-		EventASP:              i.EventASP.ID,
-		InteralASP:            i.EventASP.ID,
+		EventASPID:            i.EventASP.ID,
+		InteralASPID:          i.EventASP.ID,
 		ExternalASP:           i.ExternalASP,
 		Application:           i.Application,
 		EventTools:            i.EventTools,
-		Creator:               token.ID,
+		CreatorID:             token.ID,
 		EventState: EventState{
 			State: "created",
 		},
@@ -153,9 +153,9 @@ func (i *EventCreate) EventDatabase(token *vcapool.AccessToken) *EventDatabase {
 
 func EventPipeline() (pipe *vmdb.Pipeline) {
 	pipe = vmdb.NewPipeline()
-	pipe.LookupUnwind("users", "event_asp", "_id", "event_asp")
-	pipe.LookupUnwind("users", "internal_asp", "_id", "internal_asp")
-	pipe.LookupUnwind("users", "creator", "_id", "creator")
+	pipe.LookupUnwind("users", "event_asp_id", "_id", "event_asp")
+	pipe.LookupUnwind("users", "internal_asp_id", "_id", "internal_asp")
+	pipe.LookupUnwind("users", "creator_id", "_id", "creator")
 	pipe.LookupUnwind("organizers", "organizer", "_id", "organizer")
 	pipe.LookupList("artists", "artist_ids", "_id", "artists")
 	return
