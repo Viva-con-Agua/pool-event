@@ -115,13 +115,13 @@ type (
 	}
 
 	EventQuery struct {
-		ID          string `query:"id" qs:"id"`
-		Name        string `query:"name" qs:"name"`
-		CrewID      string `query:"crew_id" qs:"crew_id"`
-		UpdatedTo   string `query:"updated_to" qs:"updated_to"`
-		UpdatedFrom string `query:"updated_from" qs:"updated_from"`
-		CreatedTo   string `query:"created_to" qs:"created_to"`
-		CreatedFrom string `query:"created_from" qs:"created_from"`
+		ID          []string `query:"id" qs:"id"`
+		Name        string   `query:"name" qs:"name"`
+		CrewID      string   `query:"crew_id" qs:"crew_id"`
+		UpdatedTo   string   `query:"updated_to" qs:"updated_to"`
+		UpdatedFrom string   `query:"updated_from" qs:"updated_from"`
+		CreatedTo   string   `query:"created_to" qs:"created_to"`
+		CreatedFrom string   `query:"created_from" qs:"created_from"`
 	}
 )
 
@@ -186,7 +186,7 @@ func (i *EventParam) Filter() bson.D {
 
 func (i *EventQuery) Match() *vmdb.Match {
 	match := vmdb.NewMatch()
-	match.EqualString("_id", i.ID)
+	match.EqualStringList("_id", i.ID)
 	match.LikeString("name", i.Name)
 	match.GteInt64("modified.updated", i.UpdatedFrom)
 	match.GteInt64("modified.created", i.CreatedFrom)
