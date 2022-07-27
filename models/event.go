@@ -1,8 +1,8 @@
 package models
 
 import (
-	"github.com/Viva-con-Agua/vcago"
 	"github.com/Viva-con-Agua/vcago/vmdb"
+	"github.com/Viva-con-Agua/vcago/vmod"
 	"github.com/Viva-con-Agua/vcapool"
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
@@ -47,7 +47,7 @@ type (
 		EventTools            EventTools       `json:"event_tools" bson:"event_tools"`
 		CreatorID             string           `json:"creator_id" bson:"creator_id"`
 		EventState            EventState       `json:"event_state" bson:"event_state"`
-		Modified              vcago.Modified   `json:"modified" bson:"modified"`
+		Modified              vmod.Modified    `json:"modified" bson:"modified"`
 	}
 	EventTools struct {
 		Tools   []string `json:"tools" bson:"tools"`
@@ -88,7 +88,7 @@ type (
 		EventTools            EventTools       `json:"event_tools" bson:"event_tools"`
 		Creator               User             `json:"creator" bson:"creator"`
 		EventState            EventState       `json:"event_state" bson:"event_state"`
-		Modified              vcago.Modified   `json:"modified" bson:"modified"`
+		Modified              vmod.Modified    `json:"modified" bson:"modified"`
 	}
 	EventUpdate struct {
 		ID                    string           `json:"id" bson:"_id"`
@@ -147,7 +147,7 @@ func (i *EventCreate) EventDatabase(token *vcapool.AccessToken) *EventDatabase {
 		EventState: EventState{
 			State: "created",
 		},
-		Modified: vcago.NewModified(),
+		Modified: vmod.NewModified(),
 	}
 }
 
@@ -160,21 +160,21 @@ func EventPipeline() (pipe *vmdb.Pipeline) {
 	pipe.LookupList("artists", "artist_ids", "_id", "artists")
 	return
 }
-func (i *EventDatabase) Match() *vmdb.Match {
-	match := vmdb.NewMatch()
+func (i *EventDatabase) Match() bson.D {
+	match := vmdb.NewFilter()
 	match.EqualString("_id", i.ID)
-	return match
+	return match.Bson()
 }
 
-func (i *EventParam) Match() *vmdb.Match {
-	match := vmdb.NewMatch()
+func (i *EventParam) Match() bson.D {
+	match := vmdb.NewFilter()
 	match.EqualString("_id", i.ID)
-	return match
+	return match.Bson()
 }
-func (i *EventUpdate) Match() *vmdb.Match {
-	match := vmdb.NewMatch()
+func (i *EventUpdate) Match() bson.D {
+	match := vmdb.NewFilter()
 	match.EqualString("_id", i.ID)
-	return match
+	return match.Bson()
 }
 
 func (i *EventUpdate) Filter() bson.D {
@@ -184,13 +184,13 @@ func (i *EventParam) Filter() bson.D {
 	return bson.D{{Key: "_id", Value: i.ID}}
 }
 
-func (i *EventQuery) Match() *vmdb.Match {
-	match := vmdb.NewMatch()
+func (i *EventQuery) Match() bson.D {
+	match := vmdb.NewFilter()
 	match.EqualStringList("_id", i.ID)
 	match.LikeString("name", i.Name)
 	match.GteInt64("modified.updated", i.UpdatedFrom)
 	match.GteInt64("modified.created", i.CreatedFrom)
 	match.LteInt64("modified.updated", i.UpdatedTo)
 	match.LteInt64("modified.created", i.CreatedTo)
-	return match
+	return match.Bson()
 }

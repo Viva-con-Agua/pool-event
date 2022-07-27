@@ -11,7 +11,7 @@ func UserGetRequest() (payload []models.User, err error) {
 	uRL := "/admin/users"
 	response := new(vcago.Response)
 	if response, err = AdminRequest.Get(uRL); err != nil {
-		return nil, vcago.NewErrorLog(err, "ERROR", "request")
+		return nil, vcago.NewError(err, "ERROR", "request")
 	}
 	payload = []models.User{}
 	if response.Payload != nil {

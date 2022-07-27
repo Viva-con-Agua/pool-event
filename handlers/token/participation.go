@@ -19,12 +19,12 @@ var Participation = &ParticipationHandler{*vcago.NewHandler("participation")}
 func (i *ParticipationHandler) Routes(group *echo.Group) {
 	group.Use(i.Context)
 	group.Use(i.Context)
-	group.POST("", i.Create, vcapool.AccessCookieConfig())
-	group.GET("", i.Get, vcapool.AccessCookieConfig())
-	group.GET("/:id", i.GetByID, vcapool.AccessCookieConfig())
-	group.PUT("", i.Update, vcapool.AccessCookieConfig())
-	group.PUT("/status", i.Status, vcapool.AccessCookieConfig())
-	group.DELETE("/:id", i.Delete, vcapool.AccessCookieConfig())
+	group.POST("", i.Create, cookie)
+	group.GET("", i.Get, cookie)
+	group.GET("/:id", i.GetByID, cookie)
+	group.PUT("", i.Update, cookie)
+	group.PUT("/status", i.Status, cookie)
+	group.DELETE("/:id", i.Delete, cookie)
 
 }
 

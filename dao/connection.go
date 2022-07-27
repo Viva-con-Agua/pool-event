@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-var Logger = vcago.NewLoggingHandler("pool-event")
+var Logger = vcago.Logger
 var AdminRequest = vcago.NewAdminRequest()
 var Database = vmdb.NewDatabase(
 	"pool-event",
@@ -27,7 +27,7 @@ func SubscribeUserCreate() {
 	vcago.Nats.Subscribe("user.created", func(m *models.User) {
 		ctx := context.Background()
 		if err := UserCollection.InsertOne(ctx, m); err != nil {
-			output := vcago.NewErrorLog(err, "ERROR", "nats")
+			output := vcago.NewError(err, "ERROR", "nats")
 			output.Print("internal")
 		}
 	})
@@ -42,7 +42,7 @@ func SubscribeUserUpdate() {
 			bson.D{{Key: "$set", Value: m}},
 			nil,
 		); err != nil {
-			output := vcago.NewErrorLog(err, "ERROR", "nats")
+			output := vcago.NewError(err, "ERROR", "nats")
 			output.Print("internal")
 		}
 	})

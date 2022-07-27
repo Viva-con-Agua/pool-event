@@ -1,8 +1,8 @@
 package models
 
 import (
-	"github.com/Viva-con-Agua/vcago"
 	"github.com/Viva-con-Agua/vcago/vmdb"
+	"github.com/Viva-con-Agua/vcago/vmod"
 	"github.com/Viva-con-Agua/vcapool"
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
@@ -28,7 +28,7 @@ type (
 		Status  string     `json:"status" bson:"status"`
 		Crew    CrewSimple `json:"crew" bson:"crew"`
 		//Confirmer UserInternal   `json:"confirmer" bson:"confirmer"`
-		Modified vcago.Modified `json:"modified" bson:"modified"`
+		Modified vmod.Modified `json:"modified" bson:"modified"`
 	}
 	Participation struct {
 		ID      string     `json:"id" bson:"_id"`
@@ -39,7 +39,7 @@ type (
 		Event   Event      `json:"event" bson:"event"`
 		Crew    CrewSimple `json:"crew" bson:"crew"`
 		//Confirmer UserInternal   `json:"confirmer" bson:"confirmer"`
-		Modified vcago.Modified `json:"modified" bson:"modified"`
+		Modified vmod.Modified `json:"modified" bson:"modified"`
 	}
 
 	ParticipationParam struct {
@@ -69,7 +69,7 @@ func (i *ParticipationCreate) ParticipationDatabase(token *vcapool.AccessToken) 
 		Comment:  i.Comment,
 		Status:   "requested",
 		Crew:     CrewSimple(*token.CrewSimple()),
-		Modified: vcago.NewModified(),
+		Modified: vmod.NewModified(),
 	}
 }
 
@@ -80,34 +80,34 @@ func ParticipationPipeline() (pipe *vmdb.Pipeline) {
 	return
 }
 
-func (i *ParticipationQuery) Match() (r *vmdb.Match) {
-	r = vmdb.NewMatch()
-	r.EqualStringList("_id", i.ID)
-	r.EqualStringList("event_id", i.EventID)
-	r.EqualStringList("status", i.Status)
-	r.EqualStringList("comment", i.Comment)
-	r.EqualStringList("user._id", i.UserId)
-	r.EqualStringList("crew.name", i.CrewName)
-	r.EqualStringList("crew.id", i.CrewId)
-	return
+func (i *ParticipationQuery) Match() bson.D {
+	filter := vmdb.NewFilter()
+	filter.EqualStringList("_id", i.ID)
+	filter.EqualStringList("event_id", i.EventID)
+	filter.EqualStringList("status", i.Status)
+	filter.EqualStringList("comment", i.Comment)
+	filter.EqualStringList("user._id", i.UserId)
+	filter.EqualStringList("crew.name", i.CrewName)
+	filter.EqualStringList("crew.id", i.CrewId)
+	return filter.Bson()
 }
 
-func (i *ParticipationParam) Match() (r *vmdb.Match) {
-	r = vmdb.NewMatch()
-	r.EqualString("_id", i.ID)
-	return
+func (i *ParticipationParam) Match() bson.D {
+	filter := vmdb.NewFilter()
+	filter.EqualString("_id", i.ID)
+	return filter.Bson()
 }
 
-func (i *ParticipationDatabase) Match() (r *vmdb.Match) {
-	r = vmdb.NewMatch()
-	r.EqualString("_id", i.ID)
-	return
+func (i *ParticipationDatabase) Match() bson.D {
+	filter := vmdb.NewFilter()
+	filter.EqualString("_id", i.ID)
+	return filter.Bson()
 }
 
-func (i *ParticipationUpdate) Match() *vmdb.Match {
-	match := vmdb.NewMatch()
+func (i *ParticipationUpdate) Match() bson.D {
+	match := vmdb.NewFilter()
 	match.EqualString("_id", i.ID)
-	return match
+	return match.Bson()
 }
 
 func (i *ParticipationUpdate) Filter() bson.D {
@@ -131,8 +131,8 @@ func (i *ParticipationStateRequest) Permission(token *vcapool.AccessToken) bson.
 	return bson.D{{Key: "_id", Value: "not_defined"}}
 }
 
-func (i *ParticipationStateRequest) Match() (r *vmdb.Match) {
-	r = vmdb.NewMatch()
-	r.EqualString("_id", i.ID)
-	return
+func (i *ParticipationStateRequest) Match() bson.D {
+	filter := vmdb.NewFilter()
+	filter.EqualString("_id", i.ID)
+	return filter.Bson()
 }

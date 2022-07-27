@@ -18,11 +18,11 @@ var Event = &EventHandler{*vcago.NewHandler("event")}
 
 func (i *EventHandler) Routes(group *echo.Group) {
 	group.Use(i.Context)
-	group.POST("", i.Create, vcapool.AccessCookieConfig())
+	group.POST("", i.Create, cookie)
 	group.GET("", i.Get)
 	group.GET("/:id", i.GetByID)
-	group.PUT("", i.Update, vcapool.AccessCookieConfig())
-	group.DELETE("/:id", i.Delete, vcapool.AccessCookieConfig())
+	group.PUT("", i.Update, cookie)
+	group.DELETE("/:id", i.Delete, cookie)
 
 }
 

@@ -1,6 +1,6 @@
 package models
 
-import "github.com/Viva-con-Agua/vcago"
+import "github.com/Viva-con-Agua/vcago/vmod"
 
 type (
 	User struct {
@@ -13,12 +13,12 @@ type (
 		Profile     Profile `json:"profile" bson:"profile"`
 	}
 	Profile struct {
-		ID        string         `bson:"_id" json:"id"`
-		Gender    string         `bson:"gender" json:"gender"`
-		Phone     string         `bson:"phone" json:"phone"`
-		Birthdate int64          `bson:"birthdate" json:"birthdate"`
-		UserID    string         `bson:"user_id" json:"user_id"`
-		Modified  vcago.Modified `bson:"modified" json:"modified"`
+		ID        string        `bson:"_id" json:"id"`
+		Gender    string        `bson:"gender" json:"gender"`
+		Phone     string        `bson:"phone" json:"phone"`
+		Birthdate int64         `bson:"birthdate" json:"birthdate"`
+		UserID    string        `bson:"user_id" json:"user_id"`
+		Modified  vmod.Modified `bson:"modified" json:"modified"`
 	}
 	//ExternalASP represents an external asp without user_id.
 	UserExternal struct {

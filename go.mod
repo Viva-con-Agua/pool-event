@@ -3,8 +3,8 @@ module pool-event
 go 1.17
 
 require (
-	github.com/Viva-con-Agua/vcago v1.4.2
-	github.com/Viva-con-Agua/vcapool v0.3.0
+	github.com/Viva-con-Agua/vcago v1.4.5
+	github.com/Viva-con-Agua/vcapool v0.3.1
 	github.com/google/uuid v1.3.0
 	github.com/labstack/echo/v4 v4.7.2
 	go.mongodb.org/mongo-driver v1.8.4
@@ -47,6 +47,6 @@ require (
 	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
 )
 
-//replace github.com/Viva-con-Agua/vcapool => /home/dls/Projects/go/src/github.com/Viva-con-Agua/vcapool
+//replace github.com/Viva-con-Agua/vcapool => /home/dls/Projects/pkg/vcapool
 
 //replace github.com/Viva-con-Agua/vcago => /home/dls/Projects/pkg/vcago

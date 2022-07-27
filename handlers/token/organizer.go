@@ -6,7 +6,6 @@ import (
 
 	"github.com/Viva-con-Agua/vcago"
 	"github.com/Viva-con-Agua/vcago/vmdb"
-	"github.com/Viva-con-Agua/vcapool"
 	"github.com/labstack/echo/v4"
 )
 
@@ -18,11 +17,11 @@ var Organizer = &OrganizerHandler{*vcago.NewHandler("artist")}
 
 func (i *OrganizerHandler) Routes(group *echo.Group) {
 	group.Use(i.Context)
-	group.POST("", i.Create, vcapool.AccessCookieConfig())
-	group.GET("", i.Get, vcapool.AccessCookieConfig())
-	group.GET("/:id", i.GetByID, vcapool.AccessCookieConfig())
-	group.PUT("", i.Update, vcapool.AccessCookieConfig())
-	group.DELETE("/:id", i.Delete, vcapool.AccessCookieConfig())
+	group.POST("", i.Create, cookie)
+	group.GET("", i.Get, cookie)
+	group.GET("/:id", i.GetByID, cookie)
+	group.PUT("", i.Update, cookie)
+	group.DELETE("/:id", i.Delete, cookie)
 }
 
 func (i *OrganizerHandler) Create(cc echo.Context) (err error) {
