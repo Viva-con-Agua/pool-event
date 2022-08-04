@@ -9,7 +9,7 @@ import (
 
 type (
 	ArtistCreate struct {
-		Name string `json:"name" bson:"name"`
+		Name string `json:"name" bson:"name" validate:"required"`
 	}
 	Artist struct {
 		ID       string        `json:"id" bson:"_id"`

@@ -95,7 +95,7 @@ func (i *EventHandler) Update(cc echo.Context) (err error) {
 	if err = dao.EventCollection.UpdateOneAggregate(
 		c.Ctx(),
 		body.Filter(),
-		vmdb.NewUpdateSet(body),
+		vmdb.UpdateSet(body),
 		result,
 		models.EventPipeline().Match(body.Match()).Pipe,
 	); err != nil {

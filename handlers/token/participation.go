@@ -88,7 +88,7 @@ func (i *ParticipationHandler) Update(cc echo.Context) (err error) {
 	if err = dao.ParticipationCollection.UpdateOneAggregate(
 		c.Ctx(),
 		body.Filter(),
-		vmdb.NewUpdateSet(body),
+		vmdb.UpdateSet(body),
 		result,
 		models.ParticipationPipeline().Match(body.Match()).Pipe,
 	); err != nil {
@@ -148,7 +148,7 @@ func (i *ParticipationHandler) Status(cc echo.Context) (err error) {
 	if err = dao.ParticipationCollection.UpdateOneAggregate(
 		c.Ctx(),
 		body.Permission(token),
-		vmdb.NewUpdateSet(body),
+		vmdb.UpdateSet(body),
 		result,
 		models.ParticipationPipeline().Match(body.Match()).Pipe,
 	); err != nil {

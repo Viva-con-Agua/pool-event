@@ -57,7 +57,7 @@ func (i *OrganizerHandler) Update(cc echo.Context) (err error) {
 		return
 	}
 	result := new(models.Organizer)
-	if err = dao.OrganizerCollection.UpdateOne(c.Ctx(), body.Filter(), vmdb.NewUpdateSet(body), result); err != nil {
+	if err = dao.OrganizerCollection.UpdateOne(c.Ctx(), body.Filter(), vmdb.UpdateSet(body), result); err != nil {
 		return
 	}
 	return c.Updated(body)

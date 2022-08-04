@@ -3,20 +3,22 @@ module pool-event
 go 1.17
 
 require (
-	github.com/Viva-con-Agua/vcago v1.4.5
+	github.com/Viva-con-Agua/vcago v1.4.6
 	github.com/Viva-con-Agua/vcapool v0.3.1
+	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/uuid v1.3.0
 	github.com/labstack/echo/v4 v4.7.2
-	go.mongodb.org/mongo-driver v1.8.4
+	github.com/stretchr/testify v1.7.0
+	go.mongodb.org/mongo-driver v1.9.1
 )
 
 require (
 	github.com/coreos/go-oidc/v3 v3.1.0 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-playground/validator v9.31.0+incompatible // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
-	github.com/golang-jwt/jwt v3.2.2+incompatible // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/joho/godotenv v1.4.0 // indirect
@@ -29,6 +31,7 @@ require (
 	github.com/nats-io/nkeys v0.3.0 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.1 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
@@ -45,6 +48,7 @@ require (
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/square/go-jose.v2 v2.6.0 // indirect
+	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
 
 //replace github.com/Viva-con-Agua/vcapool => /home/dls/Projects/pkg/vcapool

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"pool-event/dao"
 	"pool-event/handlers/admin"
 	"pool-event/handlers/token"
 
@@ -8,8 +9,9 @@ import (
 )
 
 func main() {
-	e := vcago.NewEchoServer("pool-event")
-
+	e := vcago.NewServer()
+	dao.InitialDatabase()
+	dao.InitialCollections()
 	admins := e.Group("/admin/events")
 	admin.User.Routes(admins.Group("/user"))
 	events := e.Group("/events")
@@ -18,8 +20,5 @@ func main() {
 	token.Organizer.Routes(events.Group("/organizer"))
 	token.Participation.Routes(events.Group("/participation"))
 	//token.Tour.Routes(events.Group("/tour"))
-
-	//server
-	port := vcago.Settings.String("APP_PORT", "n", "1323")
-	e.Logger.Fatal(e.Start(":" + port))
+	e.Run()
 }
