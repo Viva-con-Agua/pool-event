@@ -31,4 +31,5 @@ jobs:
         with:
           config: .nats.json
           server: jetstream:4222
+          stream: test_stream
       - run: "go test ./dao && go test ./handlers/token && go test ./handlers/admin -NATS_URI=nats://jetstream:4222"
