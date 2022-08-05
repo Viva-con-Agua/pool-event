@@ -19,12 +19,19 @@ jobs:
 
   check-run:
     runs-on: ubuntu-latest
+    services:
+      # starts a JetStream service locally known as "jetstream" on the network
+      jetstream:
+        image: nats:latest
+
+      # creates a stream on the "jetstream:4222" server started above
+      - name: orders_stream
+        uses: nats-io/jetstream-gh-action/create/stream@main
+        with:
+          config: .nats.json
+          server: jetstream:4222
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
       - uses: supercharge/mongodb-github-action@1.7.0
-      - uses: nats-io/jetstream-gh-action/create/stream@main
-        with:
-          config: .nats.json
-          server: localhost:4222
-      - run: go test ./dao && go test ./handlers/token && go test ./handlers/admin
+      - run: go test ./dao && go test ./handlers/token && go test ./handlers/admin -NATS_URI=nats://jetstream:4222
