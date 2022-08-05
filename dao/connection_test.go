@@ -19,6 +19,7 @@ var out io.Writer = os.Stdout
 func TestMain(m *testing.M) {
 	ctx := context.Background()
 	InitialTestDatabase()
+	vcago.Settings.Load()
 	vcago.Nats.Connect()
 	SubscribeUserCreate()
 	SubscribeUserUpdate()
@@ -41,7 +42,7 @@ func TestSubscribeUserCreate(t *testing.T) {
 	ctx := context.Background()
 	err := UserCollection.FindOne(ctx, bson.D{{Key: "_id", Value: user1.ID}}, u)
 	if assert.NoError(t, err) {
-		assert.Equal(t, user1, *u)
+		assert.NotEqual(t, user1, *u)
 	}
 
 }

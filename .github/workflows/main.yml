@@ -26,4 +26,4 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
       - uses: supercharge/mongodb-github-action@1.7.0
-      - run: "go test ./dao -NATS_URL=nats://jetstream:4222 && go test ./handlers/token && go test ./handlers/admin"
+      - run: "export NATS_URI=nats://jetstream:4222 && go test ./dao ./handlers/token ./handlers/admin"
