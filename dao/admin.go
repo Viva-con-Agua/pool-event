@@ -8,6 +8,8 @@ import (
 	"github.com/Viva-con-Agua/vcago"
 )
 
+var AdminRequest = vcago.NewAdminRequest()
+
 func UserGetRequest() (payload []models.User, err error) {
 	uRL := "/admin/users"
 	response := new(vcago.Response)

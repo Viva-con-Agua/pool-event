@@ -19,11 +19,6 @@ jobs:
 
   check-run:
     runs-on: ubuntu-latest
-    services:
-      jetstream:
-        image: nats:latest
-        ports:
-          - 4222:4222
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3

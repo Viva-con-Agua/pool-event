@@ -12,6 +12,7 @@ func main() {
 	e := vcago.NewServer()
 	dao.InitialDatabase()
 	dao.InitialCollections()
+	dao.InitialNats()
 	admins := e.Group("/admin/events")
 	admin.User.Routes(admins.Group("/user"))
 	events := e.Group("/events")
