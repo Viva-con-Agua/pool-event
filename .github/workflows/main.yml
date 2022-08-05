@@ -22,9 +22,10 @@ jobs:
     services:
       jetstream:
         image: nats:latest
+        ports:
+          - 4222:4222
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
-      - uses:  nats-io/nats-server 
       - uses: supercharge/mongodb-github-action@1.7.0
       - run: "go test ./dao ./handlers/token ./handlers/admin"
