@@ -26,5 +26,5 @@ jobs:
       - uses: nats-io/jetstream-gh-action/create/stream@main
         with:
           config: .nats.json
-          server: 127.0.0.1:4222
+          server: localhost:4222
       - run: go test ./dao && go test ./handlers/token && go test ./handlers/admin
