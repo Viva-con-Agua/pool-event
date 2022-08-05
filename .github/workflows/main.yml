@@ -23,4 +23,5 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
       - uses: supercharge/mongodb-github-action@1.7.0
+      - uses: nats-io/jetstream-gh-action@master
       - run: go test ./...

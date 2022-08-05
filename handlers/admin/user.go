@@ -23,7 +23,7 @@ func (i *UserHandler) Create(cc echo.Context) (err error) {
 	c := cc.(vcago.Context)
 	users := []models.User{}
 	if users, err = dao.UserGetRequest(); err != nil {
-		return
+		return c.ErrorResponse(err)
 	}
 	var result = []error{}
 	for n := range users {

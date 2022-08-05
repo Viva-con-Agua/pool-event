@@ -9,7 +9,7 @@ import (
 
 type (
 	OrganizerCreate struct {
-		Name string `json:"name" bson:"name"`
+		Name string `json:"name" bson:"name" validate:"required"`
 	}
 	Organizer struct {
 		ID       string        `json:"id" bson:"_id"`
@@ -17,8 +17,8 @@ type (
 		Modified vmod.Modified `json:"modified" bson:"modified"`
 	}
 	OrganizerUpdate struct {
-		ID   string `json:"id" bson:"_id"`
-		Name string `json:"name" bson:"name"`
+		ID   string `json:"id" bson:"_id" validate:"required"`
+		Name string `json:"name" bson:"name" validate:"required"`
 	}
 	OrganizerParam struct {
 		ID string `param:"id"`

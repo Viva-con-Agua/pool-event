@@ -1,22 +1,16 @@
 package token
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"net/http"
 	"net/http/httptest"
-	"os"
-	"pool-event/dao"
 	"pool-event/models"
 	"testing"
 
 	"github.com/Viva-con-Agua/vcago"
 	"github.com/Viva-con-Agua/vcago/vmod"
-	"github.com/Viva-con-Agua/vcapool"
-	"github.com/golang-jwt/jwt"
 	"github.com/stretchr/testify/assert"
-	"go.mongodb.org/mongo-driver/bson"
 )
 
 type ArtistResponse struct {
@@ -27,16 +21,6 @@ type ArtistResponse struct {
 }
 
 var (
-	tester     *vcago.Test
-	token      = new(jwt.Token)
-	adminToken = &vcapool.AccessToken{
-		ID:             "5d914df8-792d-4390-b35a-0a92f6f01b3a",
-		FirstName:      "test",
-		LastName:       "user",
-		FullName:       "test user",
-		Roles:          vmod.RoleListCookie{"admin", "member"},
-		StandardClaims: jwt.StandardClaims{},
-	}
 	response = &vcago.Response{Type: "success", Message: "successfully_selected", Model: "artist"}
 	artist1  = &models.Artist{
 		ID:   "13a29971-3356-4325-8665-2b7a9360a79b",
@@ -131,16 +115,4 @@ func TestArtistDelete(t *testing.T) {
 	if assert.NoError(t, Artist.Delete(c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
 	}
-}
-
-func TestMain(m *testing.M) {
-	e := vcago.NewServer()
-	tester = vcago.NewTest(e)
-	ctx := context.Background()
-	dao.InitialTestDatabase()
-	dao.InitialCollections()
-	dao.ArtistCollection.InsertMany(ctx, bson.A{artist1, artist2, artist3})
-	ret := m.Run()
-	dao.Database.Database.Drop(ctx)
-	os.Exit(ret)
 }

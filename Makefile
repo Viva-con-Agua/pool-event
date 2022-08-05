@@ -8,6 +8,9 @@ pre-commit:
 commit:
 	pre-commit run --show-diff-on-failure --color=always --all-files && git commit && git push
 
+test:
+	go test ./dao && go test ./handlers/token && go test ./handlers/admin
+
 up:
 	docker-compose up -d
 
