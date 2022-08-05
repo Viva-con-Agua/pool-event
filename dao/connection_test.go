@@ -36,7 +36,7 @@ func TestSubscribeUserCreate(t *testing.T) {
 	buf := &bytes.Buffer{}
 	out = buf
 	vcago.Nats.Publish("pool-user.user.created", user1)
-	time.Sleep(500 * time.Millisecond)
+	time.Sleep(1000 * time.Millisecond)
 	u := new(models.User)
 	ctx := context.Background()
 	err := UserCollection.FindOne(ctx, bson.D{{Key: "_id", Value: user1.ID}}, u)
