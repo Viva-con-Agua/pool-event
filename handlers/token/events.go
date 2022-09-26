@@ -101,7 +101,7 @@ func (i *EventHandler) Update(cc echo.Context) (err error) {
 	); err != nil {
 		return
 	}
-	return c.Updated(body)
+	return c.Updated(result)
 }
 
 func (i *EventHandler) Delete(cc echo.Context) (err error) {

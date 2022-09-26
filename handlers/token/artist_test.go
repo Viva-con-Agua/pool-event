@@ -57,7 +57,6 @@ func TestArtistCreate(t *testing.T) {
 	rec := httptest.NewRecorder()
 	ac, _ := json.Marshal(artistCreate)
 	token.Claims = adminToken
-	t.Log(token.Claims)
 	c := tester.POSTContext(string(ac), rec, token)
 	if assert.NoError(t, Artist.Create(c)) {
 		assert.Equal(t, http.StatusCreated, rec.Code)

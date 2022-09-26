@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels: &labels
+    app.kubernetes.io/name: pool-event-db
+    app.kubernetes.io/component: component-explorer
+  name: pool-event-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels: *labels
+  template:
+    metadata:
+      labels: *labels
+    spec:
+      containers:
+        - image: mongo
+          name: pool-event-db
+          args: ["--dbpath", "/data/db"]
+          volumeMounts:
+            - name: "pool-event-db-storage"
+              mountPath: "/data/db"
+      volumes:
+        - name: "pool-event-db-storage"
+          persistentVolumeClaim:
+            claimName: "pool-event-db-storage"
