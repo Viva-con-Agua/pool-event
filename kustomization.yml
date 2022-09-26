@@ -3,7 +3,6 @@ commonLabels:
   app.kubernetes.io/part-of: pool-event
 
 resources:
-  - .k8s/namespace.yml
   - .k8s/deployment.yml
   - .k8s/service.yml
   - .k8s/mongodb_deployment.yml
