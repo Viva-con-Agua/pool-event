@@ -3,7 +3,7 @@ module pool-event
 go 1.17
 
 require (
-	github.com/Viva-con-Agua/vcago v1.4.8
+	github.com/Viva-con-Agua/vcago v1.4.10
 	github.com/Viva-con-Agua/vcapool v0.3.1
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/google/uuid v1.3.0
