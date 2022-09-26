@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 namespace: pool-event
 commonLabels:
-  app.kubernetes.io/part-of: pool-event
+  app.kubernetes.io/part-of: pool-api
 
 resources:
   - .k8s/namespace.yml
