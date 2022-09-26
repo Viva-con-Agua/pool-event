@@ -13,4 +13,3 @@ resources:
 
 configMapGenerator:
   - name: pool-api
-  - name: pool-event
